@@ -1,0 +1,17 @@
+/*
+returns the store ID for the store, the year and month and the number of rental orders each store has fulfilled for that month. Your table should include a column for each of the following: year, month, store ID and count of rental orders fulfilled during that month.
+*/
+
+SELECT
+  DATE_PART('MONTH', Rental_date) as Rental_month,
+  DATE_PART('YEAR', Rental_date) as Rental_year,
+  store.store_id as Store_id,
+  COUNT(*) as Count_rentals
+FROM rental
+JOIN payment
+  ON payment.rental_id = rental.rental_id
+JOIN staff
+  ON staff.staff_id = payment.staff_id
+JOIN store
+  ON store.store_id = staff.store_id
+GROUP BY 1, 2, 3;

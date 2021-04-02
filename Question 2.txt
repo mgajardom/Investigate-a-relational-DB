@@ -1,0 +1,24 @@
+*  
+Query #2  
+What is the most and least preferred movie length by movie genre?
+*/
+
+SELECT CASE
+       WHEN length < 60 THEN 'less than 1 hour'
+       WHEN length BETWEEN 60 AND 120 THEN '1 - 2 hours'
+       WHEN length BETWEEN 121 AND 180 THEN '2 - 3 hours'
+       ELSE 'more than 3 hours'
+       END AS film_length,
+       cn.name AS category_name
+       COUNT(*) AS num_of_rentals
+FROM film f
+JOIN inventory i
+ON f.film_id = i.film_id
+JOIN film_category fc
+ON fc.film_id = i.film_id
+JOIN category cn
+ON cn.category_id = fc.category_id
+JOIN rental r
+ON i.inventory_id = r.rental_id
+GROUP BY 1,2
+ORDER by 1;
